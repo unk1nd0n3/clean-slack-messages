@@ -83,8 +83,8 @@ def main():
     #     msg.delete(replies=True, files=True)
     #
     # delete all general messages and also iterate over all replies
-    for msg in slack_conn.c.general.msgs(with_replies=True):
-        msg.delete()
+    # for msg in slack_conn.c.general.msgs(with_replies=True):
+    #     msg.delete()
 
 
 if __name__ == '__main__':
