@@ -33,13 +33,13 @@ def delete_msgs_from_slack_objects(slack_conn, slack_object, delete_files):
     """
     global COUNT
 
-    for msg in slack_conn.msgs(filter(match(str(slack_object)), slack_conn.conversations)):
+    for msg in slack_conn.msgs(filter(match(str(slack_object)), slack_conn.conversations), with_replies=True):
         # delete messages, its files, and all its replies (thread)
         days, msg_time = delta_days(msg.json['ts'], CURRENT_TIME)
         # Delete messages older than DO_NOT_DELETE_MESSAGE_NEWER_DAYS
         if DELETE_MESSAGES_OLDER_DAYS <= days and msg.user_id == slack_conn.myself.id:
-            print(f'Deleted MSG #{COUNT}. Time: {msg_time}. User: {str(slack_object)}. Text: {msg.text}.')
-            msg.delete(replies=True, files=True)
+            print(f'Deleted MSG #{COUNT}. Time: {msg_time}. Object: {str(slack_object)}. Text: {msg.text}.')
+            msg.delete(replies=True, files=delete_files)
             COUNT += 1
     return True
 
@@ -74,7 +74,7 @@ def main():
 
     # Delete all own messages in groups
     for group in slack_conn.groups:
-        delete_msgs_from_slack_objects(slack_conn=slack_conn, slack_object=group, delete_files=False)
+        delete_msgs_from_slack_objects(slack_conn=slack_conn, slack_object=group, delete_files=True)
 
     # Some examples
     # Delete all messages in -bots channels
@@ -82,9 +82,9 @@ def main():
     #     # delete messages, its files, and all its replies (thread)
     #     msg.delete(replies=True, files=True)
     #
-    # # delete all general messages and also iterate over all replies
-    # for msg in slack_conn.c.general.msgs(with_replies=True):
-    #     msg.delete()
+    # delete all general messages and also iterate over all replies
+    for msg in slack_conn.c.general.msgs(with_replies=True):
+        msg.delete()
 
 
 if __name__ == '__main__':
