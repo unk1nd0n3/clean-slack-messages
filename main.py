@@ -65,12 +65,12 @@ def main():
     # slack_conn.conversations
 
     # Delete all own messages in 1:1 with all users f
-    # for ims in slack_conn.ims:
-    #     delete_msgs_from_slack_objects(slack_conn=slack_conn, slack_object=ims, delete_files=True)
-    #
-    # # Delete all own messages in multi-users-channels
-    # for mpim in slack_conn.mpim:
-    #     delete_msgs_from_slack_objects(slack_conn=slack_conn, slack_object=mpim, delete_files=True)
+    for ims in slack_conn.ims:
+        delete_msgs_from_slack_objects(slack_conn=slack_conn, slack_object=ims, delete_files=True)
+
+    # Delete all own messages in multi-users-channels
+    for mpim in slack_conn.mpim:
+        delete_msgs_from_slack_objects(slack_conn=slack_conn, slack_object=mpim, delete_files=True)
 
     # Delete all own messages in groups
     for group in slack_conn.groups:
